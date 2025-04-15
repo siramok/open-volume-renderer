@@ -127,8 +127,11 @@ generate_random_logistic(cudaStream_t stream,
                          const T stddev = (T)1.0)
 {
   generate_random(stream, rng, n_elements, out,
-                  [mean, stddev] __device__(T val) { return (T)logit(val) * stddev * 0.551328895f + mean; });
-}
+[mean, stddev] __device__(T val) { 
+    return (T)ovr::misc::logit(static_cast<float>(val)) * stddev * 0.551328895f + mean; 
+});
+
+		  }
 
 template<typename T, typename RNG>
 inline void
